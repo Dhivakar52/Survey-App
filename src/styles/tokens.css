@@ -697,7 +697,7 @@ textarea:focus-visible,
 
 @media (max-width: 768px) {
   .question-options .option-pill {
-    flex: 0 0 30%;
+    flex: 0 0 70%;
     min-width: 80px;
   }
   
@@ -712,7 +712,7 @@ textarea:focus-visible,
   }
   
   .question-input {
-    width: 30%;
+    width: 40%;
     min-width: 80px;
   }
   
@@ -726,7 +726,7 @@ textarea:focus-visible,
  @media (max-width: 480px) {
 
   .question-options .option-pill {
-    flex: 0 0 45%;
+    flex: 0 0 75%;
     min-width: 60px;
   }
   
@@ -741,7 +741,7 @@ textarea:focus-visible,
   }
   
   .question-input {
-    width: 45%;
+    width: 100%;
     min-width: 60px;
   }
   
