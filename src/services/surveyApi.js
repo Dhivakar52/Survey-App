@@ -1,21 +1,21 @@
 // Mock survey API for SSI (Surgical Site Infection) Survey
 // Swap the internals of each function for real `fetch` calls to your backend
 
-const SURVEY_ID = 2; // Changed to distinguish from the original
+const SURVEY_ID = 2;
 const SUBMISSION_KEY = `survey_submission_${SURVEY_ID}`;
 const NETWORK_DELAY = 500;
 
 const SURVEY_META = {
   surveyId: SURVEY_ID,
   title: {
-    en: 'Greetings from  SRM Medical College Hospital & Research Centre !!',
+    en: 'Greetings from SRM Medical College Hospital & Research Centre !!',
     ta: 'எஸ்.ஆர்.எம். மருத்துவக் கல்லூரி மருத்துவமனை மற்றும் ஆராய்ச்சி மையத்தின் வாழ்த்துகள்!!',
-    // hi: 'सर्जिकल साइट संक्रमण (SSI) - डिस्चार्ज के बाद निगरानी',
+    hi: 'एसआरएम मेडिकल कॉलेज अस्पताल और अनुसंधान केंद्र की ओर से बधाई !!',
   },
   description: {
     en: 'Please take a few moments to answer the following questions. Your feedback is valuable to us. Thank you for your participation.',
     ta: 'உங்கள் மதிப்புமிக்க நேரத்தை ஒதுக்கி, கீழ்க்காணும் கேள்விகளுக்குப் பதில் தருமாறு கேட்டுக்கொள்கிறோம். உங்கள் கருத்து எங்களுக்கு முக்கியமானது. நன்றி.',
-    // hi: 'कृपया कुछ क्षण निकालकर निम्नलिखित प्रश्नों के उत्तर दें। आपकी प्रतिक्रिया हमारे लिए मूल्यवान है। धन्यवाद।',
+    hi: 'कृपया कुछ क्षण निकालकर निम्नलिखित प्रश्नों के उत्तर दें। आपकी प्रतिक्रिया हमारे लिए मूल्यवान है। धन्यवाद।',
   },
 };
 
@@ -27,56 +27,48 @@ const PATIENT_DEMOGRAPHICS = {
   surgeonName: { en: 'Surgeon Name', ta: 'அறுவை மருத்துவர் பெயர்', hi: 'सर्जन का नाम' },
 };
 
-// SSI Surveillance Questions based on the SRM Medical College form
+// Actual patient data (localized)
+const PATIENT_DATA = {
+  name: {
+    en: 'Rajesh Kumar',
+    ta: 'ராஜேஷ் குமார்',
+    hi: 'राजेश कुमार'
+  },
+  ageGender: {
+    en: '45 / Male',
+    ta: '45 / ஆண்',
+    hi: '45 / पुरुष'
+  },
+  dischargeDate: {
+    en: '2026-07-15',
+    ta: '15-07-2026',
+    hi: '15-07-2026'
+  },
+  surgeonName: {
+    en: 'Dr. S. Venkatesh',
+    ta: 'டாக்டர். எஸ். வெங்கடேஷ்',
+    hi: 'डॉ. एस. वेंकटेश'
+  }
+};
+
+// Add localized common text for yes/no options
+const COMMON_TEXT = {
+  yes: {
+    en: 'Yes',
+    ta: 'ஆம்',
+    hi: 'हाँ',
+  },
+  no: {
+    en: 'No',
+    ta: 'இல்லை',
+    hi: 'नहीं',
+  },
+};
+
+// SSI Surveillance Questions
 const QUESTIONS = [
-  // Demographic information (pre-filled but included for completeness)
   {
     id: 1,
-    type: 'text',
-    required: true,
-    question: {
-      en: 'Patient Name',
-      ta: 'நோயாளியின் பெயர்',
-      hi: 'रोगी का नाम',
-    },
-    isDemographic: true,
-  },
-  {
-    id: 2,
-    type: 'text',
-    required: true,
-    question: {
-      en: 'Age / Gender',
-      ta: 'வயது / பாலினம்',
-      hi: 'आयु / लिंग',
-    },
-    isDemographic: true,
-  },
-  {
-    id: 3,
-    type: 'date',
-    required: true,
-    question: {
-      en: 'Date of Discharge',
-      ta: 'டிஸ்சார்ஜ் தேதி',
-      hi: 'डिस्चार्ज की तारीख',
-    },
-    isDemographic: true,
-  },
-  {
-    id: 4,
-    type: 'text',
-    required: true,
-    question: {
-      en: 'Surgeon Name',
-      ta: 'அறுவை மருத்துவர் பெயர்',
-      hi: 'सर्जन का नाम',
-    },
-    isDemographic: true,
-  },
-  // SSI Surveillance Questions
-  {
-    id: 5,
     type: 'yesno',
     required: true,
     question: {
@@ -84,9 +76,10 @@ const QUESTIONS = [
       ta: 'மருத்துவமனையிலிருந்து டிஸ்சார்ஜ் ஆன பிறகு உங்களுக்கு காய்ச்சல் ஏற்பட்டதா?',
       hi: 'क्या अस्पताल से छुट्टी के बाद आपको बुखार हुआ?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 6,
+    id: 2,
     type: 'yesno',
     required: true,
     question: {
@@ -94,9 +87,10 @@ const QUESTIONS = [
       ta: 'அறுவை சிகிச்சை செய்யப்பட்ட இடத்திலிருந்து சீழ் அல்லது திரவம் வெளியேறியதா?',
       hi: 'क्या सर्जिकल घाव से पीला स्राव या मवाद निकला?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 7,
+    id: 3,
     type: 'yesno',
     required: true,
     question: {
@@ -104,9 +98,10 @@ const QUESTIONS = [
       ta: 'அறுவை சிகிச்சை செய்யப்பட்ட இடத்தைச் சுற்றி சிவப்பு நிறம் அல்லது வீக்கம் ஏற்பட்டதா?',
       hi: 'क्या घाव के आसपास सूजन या लालिमा थी?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 8,
+    id: 4,
     type: 'yesno',
     required: true,
     question: {
@@ -114,9 +109,10 @@ const QUESTIONS = [
       ta: 'அறுவை சிகிச்சைக் காயத்திலிருந்து ஏதேனும் திரவம் வெளியேறியதா?',
       hi: 'क्या आपके घाव से कोई तरल पदार्थ रिस रहा है?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 9,
+    id: 5,
     type: 'radio',
     required: false,
     question: {
@@ -129,10 +125,10 @@ const QUESTIONS = [
       ta: ['தெளிவானது', 'சீழ் / மஞ்சள் நிற மேகம்', 'இளஞ்சிவப்பு, சிவப்பு அல்லது இரத்தம்'],
       hi: ['स्पष्ट', 'मवाद / बादलदार पीला', 'गुलाबी, लाल या खून'],
     },
-    dependsOn: { questionId: 8, value: 'yes' },
+    dependsOn: { questionId: 4, value: 'yes' },
   },
   {
-    id: 10,
+    id: 6,
     type: 'yesno',
     required: true,
     question: {
@@ -140,9 +136,10 @@ const QUESTIONS = [
       ta: 'அறுவை சிகிச்சைக் காயம் ஆறுவதில் தாமதம் ஏற்பட்டதா?',
       hi: 'क्या सर्जिकल घाव के ठीक होने में देरी हुई?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 11,
+    id: 7,
     type: 'yesno',
     required: true,
     question: {
@@ -150,9 +147,10 @@ const QUESTIONS = [
       ta: 'அறுவை சிகிச்சைக் காயம் திறந்துவிட்டதா (பிரிந்துவிட்டதா)?',
       hi: 'क्या घाव खुला है (अलग हो गया है)?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 12,
+    id: 8,
     type: 'yesno',
     required: true,
     question: {
@@ -160,9 +158,10 @@ const QUESTIONS = [
       ta: 'அறுவை சிகிச்சைக் காயத்தில் தொற்று ஏற்பட்டுள்ளதாக மருத்துவர் உங்களிடம் கூறினாரா?',
       hi: 'क्या किसी डॉक्टर ने आपको बताया कि आपको सर्जिकल संक्रमण है?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 13,
+    id: 9,
     type: 'yesno',
     required: true,
     question: {
@@ -170,9 +169,10 @@ const QUESTIONS = [
       ta: 'டிஸ்சார்ஜ் ஆன பிறகு காயத் தொற்றுக்காக புதிய ஆன்டிபயாட்டிக் மருந்து பரிந்துரைக்கப்பட்டதா?',
       hi: 'क्या डिस्चार्ज के बाद आपके घाव के इलाज के लिए कोई नया एंटीबायोटिक निर्धारित किया गया था?',
     },
+    options: COMMON_TEXT,
   },
   {
-    id: 14,
+    id: 10,
     type: 'text',
     required: false,
     question: {
@@ -180,10 +180,10 @@ const QUESTIONS = [
       ta: 'ஆம் எனில், மருந்தின் பெயரைக் குறிப்பிடவும்',
       hi: 'यदि हाँ, तो एंटीबायोटिक का नाम बताएं',
     },
-    dependsOn: { questionId: 13, value: 'yes' },
+    dependsOn: { questionId: 9, value: 'yes' },
   },
   {
-    id: 15,
+    id: 11,
     type: 'number',
     required: false,
     question: {
@@ -222,22 +222,40 @@ export async function fetchSurvey(lang = 'en') {
       dischargeDate: localize(PATIENT_DEMOGRAPHICS.dischargeDate, lang),
       surgeonName: localize(PATIENT_DEMOGRAPHICS.surgeonName, lang),
     },
+    patientData: {
+      name: localize(PATIENT_DATA.name, lang),
+      ageGender: localize(PATIENT_DATA.ageGender, lang),
+      dischargeDate: localize(PATIENT_DATA.dischargeDate, lang),
+      surgeonName: localize(PATIENT_DATA.surgeonName, lang),
+    }
   };
 }
 
 /** GET /surveys/:id/questions?lang= */
 export async function fetchQuestions(lang = 'en') {
   await delay();
-  return QUESTIONS.map((q) => ({
-    id: q.id,
-    type: q.type,
-    required: q.required,
-    question: localize(q.question, lang),
-    options: q.options ? localize(q.options, lang) : undefined,
-    dependsOn: q.dependsOn || undefined,
-    isDemographic: q.isDemographic || false,
-    placeholder: q.placeholder ? localize(q.placeholder, lang) : undefined,
-  }));
+  return QUESTIONS.map((q) => {
+    const questionData = {
+      id: q.id,
+      type: q.type,
+      required: q.required,
+      question: localize(q.question, lang),
+      dependsOn: q.dependsOn || undefined,
+      placeholder: q.placeholder ? localize(q.placeholder, lang) : undefined,
+    };
+
+    // Handle options - special case for yesno type
+    if (q.type === 'yesno' && q.options) {
+      questionData.options = [
+        localize(q.options.yes, lang),
+        localize(q.options.no, lang)
+      ];
+    } else if (q.options) {
+      questionData.options = localize(q.options, lang);
+    }
+
+    return questionData;
+  });
 }
 
 /** GET /surveys/:id/submission — existing submission, if any */
@@ -254,8 +272,6 @@ export async function submitSurvey({ language, answers, demographics }) {
   // Validate required questions
   const requiredQuestions = QUESTIONS.filter(q => q.required);
   const missingRequired = requiredQuestions.filter(q => {
-    // Skip demographic questions as they're pre-filled
-    if (q.isDemographic) return false;
     const answer = answers[q.id];
     return answer === undefined || answer === null || answer === '';
   });
@@ -265,8 +281,7 @@ export async function submitSurvey({ language, answers, demographics }) {
   }
   
   // Calculate SSI risk score based on answers
-  // (Simple scoring: each "yes" to infection indicators increases risk)
-  const infectionIndicators = [5, 6, 7, 8, 10, 11, 12];
+  const infectionIndicators = [1, 2, 3, 4, 6, 7, 8];
   let riskScore = 0;
   let infectionLikely = false;
   
@@ -276,7 +291,6 @@ export async function submitSurvey({ language, answers, demographics }) {
     }
   });
   
-  // If 3 or more indicators are positive, infection is likely
   if (riskScore >= 3) {
     infectionLikely = true;
   }
@@ -290,7 +304,6 @@ export async function submitSurvey({ language, answers, demographics }) {
     answers,
     submissionId,
     submissionDate: new Date().toISOString(),
-    // Additional metadata for hospital tracking
     riskScore,
     infectionLikely,
     hospital: 'SRM Medical College Hospital & Research Center',
@@ -321,4 +334,5 @@ export const SURVEY_CONSTANTS = {
   QUESTIONS,
   SURVEY_META,
   PATIENT_DEMOGRAPHICS,
+  PATIENT_DATA,
 };

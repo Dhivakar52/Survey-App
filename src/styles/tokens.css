@@ -222,7 +222,6 @@ textarea:focus-visible,
 }
 
 .progress-meta .count {
-  font-family: var(--font-mono);
   color: var(--primary-deep);
   font-weight: 600;
 }
@@ -250,6 +249,7 @@ textarea:focus-visible,
   background: var(--primary);
   color: #fff;
   box-shadow: 0 8px 20px -8px rgba(47, 53, 100, 0.55);
+  font-size: 18px;
 }
 
 .btn-survey-primary:hover:not(:disabled) {
@@ -277,6 +277,7 @@ textarea:focus-visible,
   background: transparent;
   color: var(--ink-soft);
   border: 1.5px solid var(--line);
+  font-size: 18px;
 }
 
 .btn-survey-ghost:hover:not(:disabled) {
@@ -485,6 +486,8 @@ textarea:focus-visible,
   font-size: 0.88rem;
   background: var(--surface);
   color: var(--ink);
+  width: 100%;
+    min-width: 146px;
 }
 
 .review-row {
@@ -508,3 +511,14 @@ textarea:focus-visible,
   font-size: 1rem;
   color: var(--ink);
 }
+
+
+ @media (max-width: 480px) {
+        .btn-survey{
+          font-size: 13px;
+              padding: 12px 15px;
+        }
+         .q-label{
+          font-size: 13px;
+         }
+        }

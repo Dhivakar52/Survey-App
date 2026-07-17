@@ -60,9 +60,28 @@ export default function SurveyForm() {
     }
   };
 
+  // Handle progress bar click - navigate to specific question
+  const handleProgressClick = (index) => {
+    // Optional: validate current question before navigating away
+    // if (!validate()) return;
+    
+    // Clear any errors when navigating
+    setError('');
+    
+    // Navigate to the selected question
+    setCurrentStep(index);
+  };
+
   return (
     <>
-      <ProgressBar current={currentStep + 1} total={questions.length} ofLabel={t.question.of} />
+      <ProgressBar 
+        current={currentStep + 1} 
+        total={questions.length} 
+        ofLabel={t.question.of}
+        onStepClick={handleProgressClick}
+        questions={questions}
+        answers={answers}
+      />
       <SurveyCard>
         <QuestionRenderer
           key={question.id}
@@ -75,11 +94,11 @@ export default function SurveyForm() {
           }}
         />
 
-        <div className="d-flex gap-2 mt-4">
+        <div className="d-flex gap-2 mt-4 justify-content-between">
           <button className="btn-survey btn-survey-ghost" onClick={goPrev}>
             ← {t.question.previous}
           </button>
-          <button className="btn-survey btn-survey-primary flex-grow-1" onClick={goNext}>
+          <button className="btn-survey btn-survey-primary" onClick={goNext}>
             {isLast ? t.question.submit : `${t.question.next} →`}
           </button>
         </div>

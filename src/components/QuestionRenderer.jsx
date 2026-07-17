@@ -4,7 +4,22 @@ const STARS = [1, 2, 3, 4, 5];
 const EMOJIS = ['😞', '😕', '😐', '🙂', '😍'];
 
 export default function QuestionRenderer({ question, value, error, onChange }) {
-  const { t } = useSurveyContext();
+  const { t, language } = useSurveyContext();
+
+  // Get localized text for yes/no
+  const getLocalizedYesNo = (option) => {
+    if (option === 'yes') {
+      if (language === 'ta') return 'ஆம்';
+      if (language === 'hi') return 'हाँ';
+      return 'Yes';
+    }
+    if (option === 'no') {
+      if (language === 'ta') return 'இல்லை';
+      if (language === 'hi') return 'नहीं';
+      return 'No';
+    }
+    return option;
+  };
 
   return (
     <div>
@@ -14,7 +29,7 @@ export default function QuestionRenderer({ question, value, error, onChange }) {
       </div>
 
       <div className="mt-3">
-        {renderControl(question, value, onChange, t)}
+        {renderControl(question, value, onChange, t, language, getLocalizedYesNo)}
       </div>
 
       {error && (
@@ -26,7 +41,7 @@ export default function QuestionRenderer({ question, value, error, onChange }) {
   );
 }
 
-function renderControl(question, value, onChange, t) {
+function renderControl(question, value, onChange, t, language, getLocalizedYesNo) {
   switch (question.type) {
     case 'radio':
       return (
@@ -136,18 +151,21 @@ function renderControl(question, value, onChange, t) {
     case 'yesno':
       return (
         <div className="d-flex gap-2">
-          {['yes', 'no'].map((opt) => (
-            <button
-              type="button"
-              key={opt}
-              className={`btn-survey ${value === opt ? 'btn-survey-primary' : 'btn-survey-ghost'}`}
-              style={{ flex: 1, textTransform: 'capitalize' }}
-              aria-pressed={value === opt}
-              onClick={() => onChange(opt)}
-            >
-              {opt}
-            </button>
-          ))}
+          {['yes', 'no'].map((opt) => {
+            const displayText = getLocalizedYesNo(opt);
+            return (
+              <button
+                type="button"
+                key={opt}
+                className={`btn-survey ${value === opt ? 'btn-survey-primary' : 'btn-survey-ghost'}`}
+                style={{ flex: 1, textTransform: 'capitalize' }}
+                aria-pressed={value === opt}
+                onClick={() => onChange(opt)}
+              >
+                {displayText}
+              </button>
+            );
+          })}
         </div>
       );
 
