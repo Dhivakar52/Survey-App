@@ -1,0 +1,53 @@
+{
+  "code": "en",
+  "name": "English",
+  "landing": {
+    "surveyTitleLabel": "Survey",
+    "descriptionLabel": "About this survey",
+    "timeLabel": "Estimated time",
+    "timeValue": "3 minutes",
+    "languageLabel": "Language",
+    "startButton": "Start Survey"
+  },
+  "question": {
+    "of": "of",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit Survey",
+    "required": "This field is required",
+    "chooseOne": "Select one option",
+    "chooseMany": "Select all that apply",
+    "uploadFile": "Choose a file",
+    "noFile": "No file selected"
+  },
+  "review": {
+    "title": "Review your answers",
+    "subtitle": "Check everything before you submit. You can still make changes.",
+    "edit": "Edit Answers",
+    "submit": "Submit Survey",
+    "notAnswered": "Not answered",
+    "confirmTitle": "Submit this survey?",
+    "confirmBody": "Once submitted, you won't be able to change your answers.",
+    "confirmYes": "Yes, Submit",
+    "confirmNo": "Go Back"
+  },
+  "success": {
+    "title": "Thank You!",
+    "message": "Your survey has been submitted successfully.",
+    "submissionId": "Submission ID",
+    "submissionDate": "Submission Date",
+    "close": "Close"
+  },
+  "already": {
+    "title": "Already Submitted",
+    "message": "You have already completed this survey.",
+    "submissionDate": "Submission Date",
+    "submissionId": "Submission ID",
+    "thankYou": "Thank You"
+  },
+  "errors": {
+    "loadFailed": "We couldn't load the survey. Please try again.",
+    "submitFailed": "We couldn't submit your survey. Please try again.",
+    "retry": "Retry"
+  }
+}
