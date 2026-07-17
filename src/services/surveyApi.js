@@ -8,13 +8,13 @@ const NETWORK_DELAY = 500;
 const SURVEY_META = {
   surveyId: SURVEY_ID,
   title: {
-    en: 'Greetings from SRM Medical College Hospital & Research Centre !!',
+    en: ' SRM Medical College Hospital & Research Centre !!',
     ta: 'எஸ்.ஆர்.எம். மருத்துவக் கல்லூரி மருத்துவமனை மற்றும் ஆராய்ச்சி மையத்தின் வாழ்த்துகள்!!',
     hi: 'एसआरएम मेडिकल कॉलेज अस्पताल और अनुसंधान केंद्र की ओर से बधाई !!',
   },
   description: {
-    en: 'Please take a few moments to answer the following questions. Your feedback is valuable to us. Thank you for your participation.',
-    ta: 'உங்கள் மதிப்புமிக்க நேரத்தை ஒதுக்கி, கீழ்க்காணும் கேள்விகளுக்குப் பதில் தருமாறு கேட்டுக்கொள்கிறோம். உங்கள் கருத்து எங்களுக்கு முக்கியமானது. நன்றி.',
+    en: 'Please take a few moments to answer the following questions. Your feedback is valuable to us. ',
+    ta: 'உங்கள் மதிப்புமிக்க நேரத்தை ஒதுக்கி, கீழ்க்காணும் கேள்விகளுக்குப் பதில் தருமாறு கேட்டுக்கொள்கிறோம். உங்கள் கருத்து எங்களுக்கு முக்கியமானது.',
     hi: 'कृपया कुछ क्षण निकालकर निम्नलिखित प्रश्नों के उत्तर दें। आपकी प्रतिक्रिया हमारे लिए मूल्यवान है। धन्यवाद।',
   },
 };

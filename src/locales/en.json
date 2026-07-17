@@ -36,7 +36,7 @@
     "message": "Your survey has been submitted successfully.",
     "submissionId": "Submission ID",
     "submissionDate": "Submission Date",
-    "close": "Close"
+    "close": "X"
   },
   "already": {
     "title": "Already Submitted",

@@ -94,7 +94,7 @@ export default function SurveyForm() {
           }}
         />
 
-        <div className="d-flex gap-2 mt-4 justify-content-between">
+        <div className="d-flex gap-2  mt-4 justify-content-between">
           <button className="btn-survey btn-survey-ghost" onClick={goPrev}>
             ← {t.question.previous}
           </button>

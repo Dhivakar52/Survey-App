@@ -56,7 +56,7 @@ const SurveyHeader = () => {
             flexShrink: 0,
           }} />
           <span style={{
-            fontSize: 'clamp(0.7rem, 1.2vw, 0.9rem)',
+            fontSize: '20px',
             fontWeight: '600',
             color: '#00084D',
             whiteSpace: 'nowrap',
