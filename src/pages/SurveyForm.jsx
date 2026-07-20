@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSurveyContext } from '../context/SurveyContext';
 import { useSurvey } from '../hooks/useSurvey';
 import ProgressBar from '../components/ProgressBar';
+import SurveyHeader from './SurveyHeader';
 import SurveyCard from '../components/SurveyCard';
 import QuestionRenderer from '../components/QuestionRenderer';
 import { SkeletonCard, ErrorState } from '../components/LoadingState';
@@ -74,6 +75,7 @@ export default function SurveyForm() {
 
   return (
     <>
+    {/* <SurveyHeader />  */}
       <ProgressBar 
         current={currentStep + 1} 
         total={questions.length} 

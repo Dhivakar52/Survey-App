@@ -1,106 +1,147 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/srm_logo.png";
 import { useSurveyContext, LANGUAGES } from '../context/SurveyContext';
+import { LogOut } from 'lucide-react';
 
 const SurveyHeader = () => {
   const { language, setLanguage, t } = useSurveyContext();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userEmail');
+    navigate('/login');
+  };
 
   return (
-    <>
-      <div className="app-header" style={{
+    <div className="app-header" style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: '10px',
+      padding: '12px 20px',
+      background: '#ffffff',
+      borderBottom: '1px solid #e9ecef',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
+    }}>
+      {/* Logo Section */}
+      <div className='d-flex justify-content-center' style={{
+        flex: '0 0 auto',
+      }}>
+        <img 
+          src={Logo} 
+          className='' 
+          alt="SRM Medical College Hospital" 
+          style={{
+            height: '50px',
+            width: 'auto',
+            maxWidth: '100%',
+            objectFit: 'contain',
+          }}
+        />
+      </div>
+
+      {/* Brand Section */}
+      <div className="brand-mark" style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '10px',
-        padding: '12px 20px',
-        background: '#ffffff',
-        borderBottom: '1px solid #e9ecef',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.04)',
-        // position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        borderRadius: '9px', 
+        gap: '8px',
+        flex: '1 1 auto',
+        minWidth: '150px',
       }}>
-        {/* Logo Section */}
-        <div className='d-flex justify-content-center' style={{
-          flex: '0 0 auto',
+        <span className="dot" aria-hidden="true" style={{
+          display: 'inline-block',
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          background: '#00084D',
+          flexShrink: 0,
+        }} />
+        <span style={{
+          fontSize: 'clamp(0.7rem, 1.2vw, 0.9rem)',
+          fontWeight: '600',
+          color: '#00084D',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }}>
-          <img 
-            src={Logo} 
-            className='' 
-            alt="SRM Medical College Hospital" 
-            style={{
-              height: '50px',
-              width: 'auto',
-              maxWidth: '100%',
-              objectFit: 'contain',
-            }}
-          />
-        </div>
+          Surgical site infection SMS Survey
+        </span>
+      </div>
 
-        {/* Brand Section */}
-        <div className="brand-mark" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          flex: '1 1 auto',
-          minWidth: '150px',
-        }}>
-          <span className="dot" aria-hidden="true" style={{
-            display: 'inline-block',
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            background: '#00084D',
-            flexShrink: 0,
-          }} />
-          <span style={{
-            fontSize: '20px',
-            fontWeight: '600',
-            color: '#00084D',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}>
-            Surgical site infection SMS Survey
-          </span>
-        </div>
-
+      {/* Right Side - Language Selector & Logout */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        flex: '0 0 auto',
+      }}>
         {/* Language Selector */}
-        <div style={{
-          flex: '0 0 auto',
-        }}>
-          <select
-            className="lang-select mt-1"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            aria-label={t.landing?.languageLabel || 'Select language'}
-            style={{
-              padding: '6px 12px',
-              fontSize: 'clamp(0.7rem, 1vw, 0.85rem)',
-              fontWeight: '500',
-              color: '#00084D',
-              backgroundColor: '#f8f9fa',
-              border: '1px solid #dde1e6',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              minWidth: '80px',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            {LANGUAGES.map((lang) => (
-              <option key={lang.code} value={lang.code}>
-                {lang.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          className="lang-select mt-1"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          aria-label={t.landing?.languageLabel || 'Select language'}
+          style={{
+            padding: '6px 12px',
+            fontSize: 'clamp(0.7rem, 1vw, 0.85rem)',
+            fontWeight: '500',
+            color: '#00084D',
+            backgroundColor: '#f8f9fa',
+            border: '1px solid #dde1e6',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            minWidth: '80px',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          {LANGUAGES.map((lang) => (
+            <option key={lang.code} value={lang.code}>
+              {lang.name}
+            </option>
+          ))}
+        </select>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 14px',
+            backgroundColor: 'transparent',
+            color: '#00084D',
+            border: '1px solid #dde1e6',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: 'clamp(0.7rem, 1vw, 0.85rem)',
+            fontWeight: '500',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#ffebee';
+            e.target.style.borderColor = '#ef5350';
+            e.target.style.color = '#c62828';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'transparent';
+            e.target.style.borderColor = '#dde1e6';
+            e.target.style.color = '#00084D';
+          }}
+        >
+          <LogOut size={16} />
+          <span style={{ display: 'none' }}>Logout</span>
+        </button>
       </div>
 
       {/* Responsive Styles */}
       <style>{`
-        /* Tablet and Mobile Responsive */
         @media (max-width: 768px) {
           .app-header {
             padding: 10px 15px !important;
@@ -155,10 +196,29 @@ const SurveyHeader = () => {
           }
         }
 
-        /* Small Mobile */
-       
+        @media (max-width: 380px) {
+          .app-header {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+          }
+          
+          .app-header img {
+            height: 35px !important;
+          }
+          
+          .brand-mark {
+            justify-content: center !important;
+            min-width: auto !important;
+          }
+          
+          .brand-mark span:last-child {
+            font-size: 0.65rem !important;
+            white-space: normal !important;
+          }
+        }
       `}</style>
-    </>
+    </div>
   );
 };
 
