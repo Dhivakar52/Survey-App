@@ -4,6 +4,7 @@ import { useSurvey } from '../hooks/useSurvey';
 import SurveyCard from '../components/SurveyCard';
 import { Spinner, SkeletonCard, ErrorState } from '../components/LoadingState';
 import Logo from "../assets/srm_logo.png";
+import SurveyHeader from './SurveyHeader';
 
 export default function SurveyLanding() {
   const { language, setLanguage, t } = useSurveyContext();
@@ -48,6 +49,9 @@ export default function SurveyLanding() {
   const localized = getLocalizedText();
 
   return (
+    <div>
+         {/* <SurveyHeader /> */}
+    
     <div style={{
       // minHeight: '100vh',
       // display: 'flex',
@@ -56,6 +60,8 @@ export default function SurveyLanding() {
       // padding: '20px',
       // background: 'linear-gradient(135deg, #f5f7fa 0%, #e9edf5 100%)',
     }}>
+
+   
       <SurveyCard style={{
         maxWidth: '100%',
         width: '100%',
@@ -260,6 +266,8 @@ export default function SurveyLanding() {
           {localized.startButton} →
         </button>
       </SurveyCard>
+    </div>
+
     </div>
   );
 }
