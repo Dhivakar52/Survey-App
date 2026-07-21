@@ -8,6 +8,7 @@ import AlreadySubmitted from '../pages/AlreadySubmitted';
 import LoginPage from '../pages/LoginPage';
 import ProtectedRoute from '../components/ProtectedRoute';
 import SurveyTable from '../components/Survey/SurveyTable';
+import CreateSurvey from "../components/AddSurvey/CreateSurvey"
 
 export default function SurveyRoutes() {
   return (
@@ -21,9 +22,11 @@ export default function SurveyRoutes() {
           <MainLayout />
         </ProtectedRoute>
       }>
+        <Route path="/create" element={<CreateSurvey/>} />
         <Route path="/dashboard" element={<SurveyTable/>} />
         <Route index element={<SurveyLanding />} />
         <Route path="survey" element={<SurveyForm />} />
+        
         <Route path="review" element={<ReviewPage />} />
         <Route path="success" element={<SuccessPage />} />
         <Route path="already-submitted" element={<AlreadySubmitted />} />

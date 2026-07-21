@@ -41,6 +41,13 @@ const Sidebar = ({ isCollapsed, isMobileOpen, onToggle, onMobileClose }) => {
       path: '/dashboard',
       subItems: []
     },
+     {
+      id: 'create',
+      label: 'Create Survey',
+      icon: <LayoutDashboard size={20} />,
+      path: '/create',
+      subItems: []
+    },
   ];
 
   const isActive = (path) => window.location.pathname === path;

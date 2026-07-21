@@ -100,7 +100,7 @@ const Header = () => {
         flex: '0 0 auto',
       }}>
         {/* Language Selector */}
-        <select
+        {/* <select
           className="lang-select"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
@@ -123,7 +123,7 @@ const Header = () => {
               {lang.name}
             </option>
           ))}
-        </select>
+        </select> */}
 
         {/* User Profile Dropdown */}
         <div className="position-relative" ref={dropdownRef}>
