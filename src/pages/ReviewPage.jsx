@@ -150,7 +150,7 @@ export default function ReviewPage() {
                 }}>
                   {formatAnswer(answers[q.id], t, language)}
                 </div>
-                <button
+                {/* <button
                   className="btn-survey btn-survey-ghost"
                   style={{ 
                     padding: '4px 12px', 
@@ -179,7 +179,7 @@ export default function ReviewPage() {
                   onClick={() => handleEdit(i)}
                 >
                   <Pencil size={14} /> {t.review.edit}
-                </button>
+                </button> */}
               </div>
             );
           })}

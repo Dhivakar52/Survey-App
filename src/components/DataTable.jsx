@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,19 +7,31 @@ import {
   getPaginationRowModel,
   flexRender,
 } from '@tanstack/react-table';
-import { ChevronUp, ChevronDown, Settings, Eye, Edit, Trash2, Download, ChevronRight, Check } from 'lucide-react';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import Pagination from './Pagination';
+import ColumnToggle from './ColumnToggle';
+import SearchBar from './SearchBar';
+import ExportButton from './ExportButton';
+import ActionMenu from './ActionMenu';
+import FilterPanel from './FilterPanel';
 
 const DataTable = ({
   data = [],
   columns = [],
   title = 'Data Table',
+  onView,
   onEdit,
   onDelete,
-  onView,
+  onAuditLog,
   loading = false,
   itemsPerPage = 10,
   showColumnToggle = true,
+  showSearch = true,
+  showExport = true,
+  showFilter = true,
+  showActions = true,
+  openMenuId = null,
+  setOpenMenuId = () => {},
 }) => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -29,71 +41,35 @@ const DataTable = ({
     pageSize: itemsPerPage,
   });
   const [globalFilter, setGlobalFilter] = useState('');
-  const [isColumnDropdownOpen, setIsColumnDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsColumnDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   // Add actions column if callbacks are provided
-  const tableColumns = React.useMemo(() => {
+  const tableColumns = useMemo(() => {
     const cols = columns.map(col => ({
       ...col,
       id: col.id || col.accessorKey || col.header?.toString() || Math.random().toString(36).substring(7),
     }));
     
-    if (onEdit || onDelete || onView) {
+    if (showActions && (onView || onEdit || onDelete || onAuditLog)) {
       cols.push({
         id: 'actions',
         header: 'Actions',
         cell: ({ row }) => (
-          <div className="d-flex gap-1 justify-content-center">
-            {onView && (
-              <button
-                onClick={() => onView(row.original)}
-                className="btn btn-sm btn-outline-primary rounded-circle p-1"
-                title="View"
-                style={{ width: '30px', height: '30px' }}
-              >
-                <Eye size={14} />
-              </button>
-            )}
-            {onEdit && (
-              <button
-                onClick={() => onEdit(row.original)}
-                className="btn btn-sm btn-outline-warning rounded-circle p-1"
-                title="Edit"
-                style={{ width: '30px', height: '30px' }}
-              >
-                <Edit size={14} />
-              </button>
-            )}
-            {onDelete && (
-              <button
-                onClick={() => onDelete(row.original)}
-                className="btn btn-sm btn-outline-danger rounded-circle p-1"
-                title="Delete"
-                style={{ width: '30px', height: '30px' }}
-              >
-                <Trash2 size={14} />
-              </button>
-            )}
-          </div>
+          <ActionMenu 
+            item={row.original}
+            onView={onView}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onAuditLog={onAuditLog}
+            openMenuId={openMenuId}
+            setOpenMenuId={setOpenMenuId}
+          />
         ),
         enableSorting: false,
       });
     }
     
     return cols;
-  }, [columns, onEdit, onDelete, onView]);
+  }, [columns, onView, onEdit, onDelete, onAuditLog, showActions, openMenuId, setOpenMenuId]);
 
   const table = useReactTable({
     data,
@@ -117,184 +93,67 @@ const DataTable = ({
     debugTable: false,
   });
 
-  // Get visible column count
-  const visibleCount = table.getAllLeafColumns().filter(col => col.getIsVisible()).length;
-  const totalColumns = table.getAllLeafColumns().length;
-
-  // Format column name for display
-  const formatColumnName = (name) => {
-    if (name === 'id') return 'ID';
-    if (name === 'actions') return '';
-    return name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
-  };
-
-  // Skeleton rows for loading state
   const skeletonRows = Array.from({ length: 5 });
 
+  const handleFilter = (filters) => {
+    console.log('Filters applied:', filters);
+    // You can add additional logic here if needed
+  };
+
   return (
-    <div className="bg-white rounded-3 p-3 p-lg-4 shadow-sm border border-light">
+    <div className="bg-white rounded-3 p-3 shadow-sm border border-light">
       {/* Header */}
-      <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
-        <h5 className="fw-semibold m-0" style={{ color: '#00084D' }}>
+      <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 gap-sm-3 mb-3">
+        <h5 className="fw-semibold m-0" style={{ color: '#00084D', fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}>
           {title}
         </h5>
-        <div className="d-flex flex-wrap align-items-center gap-2">
-
-
-             {showColumnToggle && (
-            <div className="position-relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsColumnDropdownOpen(!isColumnDropdownOpen)}
-                className="btn btn-light btn-sm d-flex align-items-center gap-1"
-                style={{
-                  borderColor: isColumnDropdownOpen ? '#00084D' : '#dee2e6',
-                  background: isColumnDropdownOpen ? '#f0f4ff' : '#ffffff',
-                }}
-              >
-                <Settings size={16} />
-                <span>Columns</span>
-                <span 
-                  className="badge ms-1" 
-                  style={{ 
-                    background: '#00084D', 
-                    fontSize: '0.6rem',
-                    padding: '2px 6px'
-                  }}
-                >
-                  {visibleCount}
-                </span>
-                <ChevronRight 
-                  size={14} 
-                  style={{
-                    transform: isColumnDropdownOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.2s ease'
-                  }}
-                />
-              </button>
-
-              {isColumnDropdownOpen && (
-                <div
-                  className="position-absolute end-0 mt-1 bg-white rounded-3 shadow-lg border"
-                  style={{ 
-                    zIndex: 1050, 
-                    width: '220px',
-                    top: '100%',
-                    maxHeight: '320px',
-                    overflowY: 'auto',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.12)',
-                  }}
-                >
-                  {/* Header */}
-                  <div className="px-3 py-2 border-bottom bg-light rounded-top-3">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <span className="small fw-semibold text-muted">Toggle Columns</span>
-                      <button
-                        onClick={() => {
-                          const allVisible = {};
-                          table.getAllLeafColumns().forEach(col => {
-                            if (col.id !== 'actions') {
-                              allVisible[col.id] = true;
-                            }
-                          });
-                          setColumnVisibility(allVisible);
-                        }}
-                        className="btn btn-sm btn-link text-primary p-0 text-decoration-none"
-                      >
-                        Show All
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* Column List */}
-                  <div className="p-2">
-                    {table.getAllLeafColumns().map((column) => {
-                      if (column.id === 'actions') return null;
-                      const isVisible = column.getIsVisible();
-                      const displayName = formatColumnName(column.id);
-                      
-                      return (
-                        <label
-                          key={column.id}
-                          className="d-flex align-items-center gap-2 rounded cursor-pointer"
-                          style={{
-                            cursor: 'pointer',
-                            transition: 'background 0.15s ease',
-                             padding: '6px 4px',
-                          }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = '#f8f9fa'}
-                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                        >
-                          <div
-                            className="d-flex align-items-center justify-content-center rounded"
-                            style={{
-                              width: '18px',
-                              height: '18px',
-                              border: isVisible ? '2px solid #00084D' : '2px solid #d1d5db',
-                              background: isVisible ? '#00084D' : '#ffffff',
-                              transition: 'all 0.15s ease',
-                              flexShrink: 0,
-                             
-                            }}
-                          >
-                            {isVisible && <Check size={12} color="#ffffff" />}
-                          </div>
-                          <input
-                            type="checkbox"
-                            checked={isVisible}
-                            onChange={() => column.toggleVisibility(!isVisible)}
-                            style={{ display: 'none' }}
-                          />
-                          <span className="small" style={{ color: isVisible ? '#00084D' : '#6c757d' }}>
-                            {displayName}
-                          </span>
-                        </label>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+        <div className="d-flex flex-wrap align-items-center gap-1 gap-sm-2">
           {/* Search */}
-          <div className="d-flex align-items-center bg-light rounded px-2 py-1 border border-light">
-
-
-              {/* Column Toggle Dropdown */}
-         
-
-
-
-
-
-
-            <input
-              type="text"
-              placeholder="Search..."
-              value={globalFilter ?? ''}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              className="border-0 bg-transparent px-2 py-1 small"
-              style={{ width: '150px', outline: 'none' }}
+          {showSearch && (
+            <SearchBar 
+              value={globalFilter} 
+              onChange={setGlobalFilter} 
             />
-          </div>
+          )}
 
-        
+          {/* Filter */}
+          {showFilter && (
+            <FilterPanel 
+              table={table} 
+              data={data}
+              onFilter={handleFilter}
+            />
+          )}
+
+          {/* Column Toggle */}
+          {showColumnToggle && (
+            <ColumnToggle table={table} />
+          )}
+
           {/* Export Button */}
-          <button
-            className="btn btn-primary btn-sm d-flex align-items-center gap-1"
-            style={{ background: '#00084D', borderColor: '#00084D' }}
-            onClick={() => {
-              console.log('Export data:', data);
-            }}
-          >
-            <Download size={16} />
-            <span>Export</span>
-          </button>
+          {showExport && (
+            <ExportButton data={data} />
+          )}
         </div>
       </div>
 
       {/* Table */}
-      <div className="table-responsive">
-        <table className="table table-hover  mb-0">
+      <div 
+        className="table-responsive" 
+        style={{ 
+          overflowX: 'auto', 
+          overflowY: 'visible',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        <table 
+          className="table table-hover mb-0" 
+          style={{ 
+            width: '100%',
+            minWidth: '100%',
+          }}
+        >
+          {/* TABLE HEADER */}
           <thead className="table-light">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -302,10 +161,17 @@ const DataTable = ({
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className={`fw-semibold text-secondary ${
-                      header.column.getCanSort() ? 'cursor-pointer' : ''
-                    }`}
-                    style={{ cursor: header.column.getCanSort() ? 'pointer' : 'default' }}
+                    className={`fw-semibold text-secondary ${header.column.getCanSort() ? 'cursor-pointer' : ''}`}
+                    style={{ 
+                      cursor: header.column.getCanSort() ? 'pointer' : 'default',
+                      fontSize: 'clamp(0.7rem, 0.8vw, 0.85rem)',
+                      padding: '8px 10px',
+                      whiteSpace: 'nowrap',
+                      position: 'sticky',
+                      top: 0,
+                      background: '#f8f9fa',
+                      zIndex: 2,
+                    }}
                   >
                     <div className="d-flex align-items-center gap-1">
                       {flexRender(
@@ -313,8 +179,8 @@ const DataTable = ({
                         header.getContext()
                       )}
                       {{
-                        asc: <ChevronUp size={14} />,
-                        desc: <ChevronDown size={14} />,
+                        asc: <ChevronUp size={12} />,
+                        desc: <ChevronDown size={12} />,
                       }[header.column.getIsSorted()] ?? null}
                     </div>
                   </th>
@@ -322,13 +188,15 @@ const DataTable = ({
               </tr>
             ))}
           </thead>
+
+          {/* TABLE BODY */}
           <tbody>
             {loading ? (
               skeletonRows.map((_, rowIndex) => (
                 <tr key={rowIndex}>
                   {tableColumns.map((col, colIndex) => (
-                    <td key={colIndex} className="px-4 py-4">
-                      <div className="h-4 w-full animate-pulse rounded bg-gray-200"></div>
+                    <td key={colIndex} className="px-2 py-3">
+                      <div className="animate-pulse rounded bg-gray-200" style={{ height: '16px', width: '100%' }}></div>
                     </td>
                   ))}
                 </tr>
@@ -346,7 +214,10 @@ const DataTable = ({
               table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="hover:bg-gray-50">
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="align-middle">
+                    <td key={cell.id} className="align-middle" style={{ 
+                      padding: '8px 10px',
+                      fontSize: 'clamp(0.75rem, 0.85vw, 0.9rem)',
+                    }}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

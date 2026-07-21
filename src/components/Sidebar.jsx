@@ -9,7 +9,9 @@ import {
   ChevronDown,
   ChevronRight,
   BarChart3,
-  X
+  X,
+  ChevronLeft,
+  ChevronRight as ChevronRightIcon
 } from 'lucide-react';
 import Logo from "../assets/srm_logo.png";
 
@@ -39,48 +41,6 @@ const Sidebar = ({ isCollapsed, isMobileOpen, onToggle, onMobileClose }) => {
       path: '/dashboard',
       subItems: []
     },
-    // {
-    //   id: 'survey',
-    //   label: 'Survey ',
-    //   icon: <ClipboardList size={20} />,
-    //   path: '/',
-    //   subItems: [
-    //     { label: 'All Surveys', path: '/' },
-    //     { label: 'New Survey', path: '/survey' },
-    //     { label: 'Review', path: '/review' },
-    //     { label: 'Responses', path: '/responses' },
-    //   ]
-    // },
-    // {
-    //   id: 'patients',
-    //   label: 'Patients',
-    //   icon: <Users size={20} />,
-    //   path: '/patients',
-    //   subItems: [
-    //     { label: 'All Patients', path: '/patients' },
-    //     { label: 'Add Patient', path: '/patients/add' },
-    //   ]
-    // },
-    // {
-    //   id: 'reports',
-    //   label: 'Reports',
-    //   icon: <BarChart3 size={20} />,
-    //   path: '/reports',
-    //   subItems: [
-    //     { label: 'Analytics', path: '/reports/analytics' },
-    //     { label: 'Statistics', path: '/reports/statistics' },
-    //   ]
-    // },
-    // {
-    //   id: 'settings',
-    //   label: 'Settings',
-    //   icon: <Settings size={20} />,
-    //   path: '/settings',
-    //   subItems: [
-    //     { label: 'Profile', path: '/settings/profile' },
-    //     { label: 'Preferences', path: '/settings/preferences' },
-    //   ]
-    // }
   ];
 
   const isActive = (path) => window.location.pathname === path;
@@ -115,7 +75,7 @@ const Sidebar = ({ isCollapsed, isMobileOpen, onToggle, onMobileClose }) => {
           flexShrink: 0,
         }}
       >
-        {/* Sidebar Header */}
+        {/* Sidebar Header with Toggle Button */}
         <div className="d-flex align-items-center justify-content-between px-3 py-3 border-bottom border-light flex-shrink-0">
           <div className="d-flex align-items-center gap-2">
             <img src={Logo} alt="Logo" className="h-8" style={{ height: '32px', width: 'auto' }} />
@@ -125,9 +85,39 @@ const Sidebar = ({ isCollapsed, isMobileOpen, onToggle, onMobileClose }) => {
               </span>
             )}
           </div>
+          {/* Toggle Button - Only visible on desktop */}
           <button
             onClick={onToggle}
-            className="btn btn-sm btn-outline-secondary d-md-none"
+            className="d-none d-md-flex align-items-center justify-content-center"
+            style={{ 
+              width: '28px', 
+              height: '28px', 
+              borderRadius: '50%',
+              border: '1px solid #dde1e6',
+              background: 'transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              padding: 0,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#f0f4ff';
+              e.currentTarget.style.borderColor = '#00084D';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.borderColor = '#dde1e6';
+            }}
+          >
+            {isCollapsed ? (
+              <ChevronRightIcon size={16} style={{ color: '#666' }} />
+            ) : (
+              <ChevronLeft size={16} style={{ color: '#666' }} />
+            )}
+          </button>
+          {/* Mobile close button */}
+          <button
+            onClick={onToggle}
+            className="d-md-none btn btn-sm btn-outline-secondary"
           >
             <X size={18} />
           </button>

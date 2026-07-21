@@ -50,7 +50,7 @@ const Pagination = ({ table, totalCount }) => {
   const pages = getPages();
 
   return (
-    <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3 mt-2 border-top border-light">
+    <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 py-3 my-2 border-top border-light">
       {/* LEFT */}
       <div className="d-flex align-items-center gap-2">
         <span className="text-muted small">

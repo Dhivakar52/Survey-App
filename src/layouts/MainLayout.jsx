@@ -12,8 +12,16 @@ const MainLayout = () => {
       if (window.innerWidth >= 768) {
         setMobileMenuOpen(false);
       }
+      // Auto collapse sidebar on small screens
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
     };
     window.addEventListener('resize', handleResize);
+    // Initial check
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -29,8 +37,16 @@ const MainLayout = () => {
     setMobileMenuOpen(false);
   };
 
+  // Calculate margin based on sidebar state
+  const getMarginLeft = () => {
+    if (window.innerWidth < 768) {
+      return 0; // Mobile - no margin
+    }
+    return sidebarCollapsed ? '70px' : '250px';
+  };
+
   return (
-    <div className="d-flex" style={{   overflow: 'hidden' }}>
+    <div className="d-flex" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Sidebar */}
       <Sidebar 
         isCollapsed={sidebarCollapsed}
@@ -40,14 +56,25 @@ const MainLayout = () => {
       />
 
       {/* Main Content */}
-      <div className="d-flex flex-column flex-grow-1" style={{ minWidth: 0, overflow: 'hidden' , marginLeft: sidebarCollapsed ? '70px' : '250px', transition: 'margin-left 0.3s ease'}}>
+      <div 
+        className="d-flex flex-column flex-grow-1" 
+        style={{ 
+          minWidth: 0, 
+          overflow: 'hidden',
+          marginLeft: getMarginLeft(),
+          transition: 'margin-left 0.3s ease',
+        }}
+      >
         <Header onMobileMenuToggle={toggleMobileMenu} />
         
-        <div className="flex-grow-1" style={{ 
-          overflowY: 'auto', 
-        //   padding: '20px 24px',
-          background: 'transparent',
-        }}>
+        <div 
+          className="flex-grow-1" 
+          style={{ 
+            // overflowY: 'auto', 
+            padding: '0',
+            // background: '#f5f7fa',
+          }}
+        >
           <Outlet />
         </div>
       </div>

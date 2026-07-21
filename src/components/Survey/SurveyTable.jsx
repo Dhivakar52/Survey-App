@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, Edit, Trash2, Eye } from 'lucide-react';
+import { Menu, Edit, Trash2, Eye, X } from 'lucide-react';
 import DataTable from '../DataTable';
 import CustomPanel from '../CustomPanel';
 import ReviewPage from '../../pages/ReviewPage';
 
-// Sample survey data
 const surveyData = [
   { 
     id: 1, 
@@ -76,8 +75,233 @@ const surveyData = [
       1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
       6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
     }
+  },
+  { 
+    id: 6, 
+    patientName: 'Kavitha Lakshmi', 
+    age: 38, 
+    gender: 'Female',
+    surgeon: 'Dr. M. Lakshmi',
+    dischargeDate: '2026-07-10',
+    surveyDate: '2026-07-11',
+    status: 'Completed',
+    answers: {
+      1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 7, 
+    patientName: 'Vikram Singh', 
+    age: 42, 
+    gender: 'Male',
+    surgeon: 'Dr. S. Venkatesh',
+    dischargeDate: '2026-07-09',
+    surveyDate: '2026-07-10',
+    status: 'Pending',
+    answers: {
+      1: 'yes', 2: 'no', 3: 'yes', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 8, 
+    patientName: 'Meena Rajan', 
+    age: 50, 
+    gender: 'Female',
+    surgeon: 'Dr. R. Kumar',
+    dischargeDate: '2026-07-08',
+    surveyDate: '2026-07-09',
+    status: 'In Progress',
+    answers: {
+      1: 'yes', 2: 'yes', 3: 'yes', 4: 'yes', 5: 'Clear',
+      6: 'yes', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 9, 
+    patientName: 'Arun Prakash', 
+    age: 33, 
+    gender: 'Male',
+    surgeon: 'Dr. P. Srinivasan',
+    dischargeDate: '2026-07-07',
+    surveyDate: '2026-07-08',
+    status: 'Completed',
+    answers: {
+      1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 10, 
+    patientName: 'Deepa Nair', 
+    age: 29, 
+    gender: 'Female',
+    surgeon: 'Dr. M. Lakshmi',
+    dischargeDate: '2026-07-06',
+    surveyDate: '2026-07-07',
+    status: 'Completed',
+    answers: {
+      1: 'yes', 2: 'yes', 3: 'yes', 4: 'yes', 5: 'Pus / Cloudy yellow',
+      6: 'yes', 7: 'yes', 8: 'yes', 9: 'yes', 10: 'Ciprofloxacin', 11: '7'
+    }
+  },
+  { 
+    id: 11, 
+    patientName: 'Ganesh Iyer', 
+    age: 58, 
+    gender: 'Male',
+    surgeon: 'Dr. S. Venkatesh',
+    dischargeDate: '2026-07-05',
+    surveyDate: '2026-07-06',
+    status: 'Pending',
+    answers: {
+      1: 'yes', 2: 'yes', 3: 'no', 4: 'yes', 5: 'Pink, red or blood',
+      6: 'no', 7: 'no', 8: 'yes', 9: 'yes', 10: 'Amoxicillin', 11: '2'
+    }
+  },
+  { 
+    id: 12, 
+    patientName: 'Latha Krishnan', 
+    age: 47, 
+    gender: 'Female',
+    surgeon: 'Dr. R. Kumar',
+    dischargeDate: '2026-07-04',
+    surveyDate: '2026-07-05',
+    status: 'Completed',
+    answers: {
+      1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 13, 
+    patientName: 'Ravi Shankar', 
+    age: 51, 
+    gender: 'Male',
+    surgeon: 'Dr. P. Srinivasan',
+    dischargeDate: '2026-07-03',
+    surveyDate: '2026-07-04',
+    status: 'In Progress',
+    answers: {
+      1: 'yes', 2: 'no', 3: 'yes', 4: 'no', 5: '',
+      6: 'yes', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 14, 
+    patientName: 'Sangeetha Menon', 
+    age: 35, 
+    gender: 'Female',
+    surgeon: 'Dr. M. Lakshmi',
+    dischargeDate: '2026-07-02',
+    surveyDate: '2026-07-03',
+    status: 'Completed',
+    answers: {
+      1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 15, 
+    patientName: 'Murugan Nandhi', 
+    age: 62, 
+    gender: 'Male',
+    surgeon: 'Dr. S. Venkatesh',
+    dischargeDate: '2026-07-01',
+    surveyDate: '2026-07-02',
+    status: 'Pending',
+    answers: {
+      1: 'yes', 2: 'yes', 3: 'yes', 4: 'yes', 5: 'Clear',
+      6: 'yes', 7: 'yes', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 16, 
+    patientName: 'Radha Varadan', 
+    age: 44, 
+    gender: 'Female',
+    surgeon: 'Dr. R. Kumar',
+    dischargeDate: '2026-06-30',
+    surveyDate: '2026-07-01',
+    status: 'Completed',
+    answers: {
+      1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 17, 
+    patientName: 'Karthik Raj', 
+    age: 26, 
+    gender: 'Male',
+    surgeon: 'Dr. P. Srinivasan',
+    dischargeDate: '2026-06-29',
+    surveyDate: '2026-06-30',
+    status: 'In Progress',
+    answers: {
+      1: 'yes', 2: 'no', 3: 'no', 4: 'yes', 5: 'Pus / Cloudy yellow',
+      6: 'no', 7: 'no', 8: 'yes', 9: 'yes', 10: 'Ciprofloxacin', 11: '4'
+    }
+  },
+  { 
+    id: 18, 
+    patientName: 'Uma Maheswari', 
+    age: 52, 
+    gender: 'Female',
+    surgeon: 'Dr. M. Lakshmi',
+    dischargeDate: '2026-06-28',
+    surveyDate: '2026-06-29',
+    status: 'Completed',
+    answers: {
+      1: 'no', 2: 'no', 3: 'no', 4: 'no', 5: '',
+      6: 'no', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
+  },
+  { 
+    id: 19, 
+    patientName: 'Senthil Kumar', 
+    age: 41, 
+    gender: 'Male',
+    surgeon: 'Dr. S. Venkatesh',
+    dischargeDate: '2026-06-27',
+    surveyDate: '2026-06-28',
+    status: 'Completed',
+    answers: {
+      1: 'yes', 2: 'yes', 3: 'yes', 4: 'yes', 5: 'Pink, red or blood',
+      6: 'yes', 7: 'yes', 8: 'yes', 9: 'yes', 10: 'Amoxicillin', 11: '6'
+    }
+  },
+  { 
+    id: 20, 
+    patientName: 'Lakshmi Narayanan', 
+    age: 56, 
+    gender: 'Male',
+    surgeon: 'Dr. R. Kumar',
+    dischargeDate: '2026-06-26',
+    surveyDate: '2026-06-27',
+    status: 'Pending',
+    answers: {
+      1: 'yes', 2: 'yes', 3: 'no', 4: 'yes', 5: 'Clear',
+      6: 'yes', 7: 'no', 8: 'no', 9: 'no', 10: '', 11: ''
+    }
   }
 ];
+
+// Question Labels for display
+const QUESTION_LABELS = {
+  1: 'Did you have fever after hospital discharge?',
+  2: 'Was there any yellowish secretion or pus in the surgical wound?',
+  3: 'Was there any swelling or redness around the wound?',
+  4: 'Do you have any fluid leaking from your wound?',
+  5: 'If YES to fluid leakage, what was the nature of the fluid?',
+  6: 'Was there a delay in the healing of the surgical wound?',
+  7: 'Is the wound gaping open?',
+  8: 'Did any doctor tell you that you had a surgical infection?',
+  9: 'Was any new antibiotic prescribed for treating your wound after discharge?',
+  10: 'If YES, please specify the antibiotic name(s)',
+  11: 'How many days ago did you first notice any signs of infection?'
+};
 
 // ActionMenu Component with Fixed Positioning
 const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
@@ -90,7 +314,6 @@ const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
     e.stopPropagation();
     
     if (!isMenuOpen) {
-      // Get button position
       const rect = buttonRef.current.getBoundingClientRect();
       setMenuPosition({
         top: rect.bottom + 5,
@@ -101,7 +324,6 @@ const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close menu on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -192,6 +414,100 @@ const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
   );
 };
 
+// View Survey Component
+const ViewSurvey = ({ survey, onClose }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
+
+  // Format answer for display
+  const formatAnswer = (value) => {
+    if (!value || value === '') return 'Not answered';
+    if (value === 'yes') return ' Yes';
+    if (value === 'no') return ' No';
+    return value;
+  };
+
+  return (
+    <div>
+      {/* Patient Info */}
+      <div className="bg-light p-3 rounded-3 mb-3">
+        <div className="row">
+          <div className="col-md-6">
+            <small className="text-muted">Patient Name</small>
+            <div className="fw-semibold">{survey.patientName}</div>
+          </div>
+          <div className="col-md-6">
+            <small className="text-muted">Status</small>
+            <div>
+              <span className={`badge ${survey.status === 'Completed' ? 'bg-success' : survey.status === 'Pending' ? 'bg-warning' : 'bg-info'}`}>
+                {survey.status}
+              </span>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <small className="text-muted">Age / Gender</small>
+            <div className="fw-semibold">{survey.age} / {survey.gender}</div>
+          </div>
+          <div className="col-md-6">
+            <small className="text-muted">Surgeon</small>
+            <div className="fw-semibold">{survey.surgeon}</div>
+          </div>
+          <div className="col-md-6">
+            <small className="text-muted">Discharge Date</small>
+            <div className="fw-semibold">{formatDate(survey.dischargeDate)}</div>
+          </div>
+          <div className="col-md-6">
+            <small className="text-muted">Survey Date</small>
+            <div className="fw-semibold">{formatDate(survey.surveyDate)}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Questions and Answers */}
+      <h6 className="fw-semibold mb-2">Survey Questions & Answers</h6>
+      <div className="bg-white p-3 rounded-3 border">
+        {Object.entries(survey.answers).map(([key, value]) => {
+          const questionNum = parseInt(key);
+          const questionText = QUESTION_LABELS[questionNum] || `Question ${key}`;
+          const answer = formatAnswer(value);
+          const isAnswered = value && value !== '';
+          
+          return (
+            <div 
+              key={key} 
+              className="d-flex justify-content-between align-items-center py-2 border-bottom border-light"
+              style={{ 
+                background: isAnswered ? 'transparent' : '#fafafa',
+                padding: '8px 12px',
+                borderRadius: '4px',
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <div className="small text-muted" style={{ fontSize: '0.75rem' }}>
+                  Q{key}
+                </div>
+                <div className="fw-semibold" style={{ fontSize: '0.85rem' }}>
+                  {questionText}
+                </div>
+              </div>
+              <div style={{ 
+                minWidth: '100px', 
+                textAlign: 'right',
+                fontWeight: isAnswered ? '600' : '400',
+                color: isAnswered ? '#00084D' : '#999',
+              }}>
+                {answer}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const SurveyTable = () => {
   const navigate = useNavigate();
   const [selectedSurvey, setSelectedSurvey] = useState(null);
@@ -206,55 +522,66 @@ const SurveyTable = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   };
-
-  // Define columns for DataTable
-  const columns = [
-    { 
-      id: 'id',
-      accessorKey: 'id', 
-      header: 'ID',
-      cell: ({ row }) => <span className="fw-bold">{row.original.id}</span>
-    },
-    { 
-      id: 'patientName',
-      accessorKey: 'patientName', 
-      header: 'Patient Name',
-      cell: ({ row }) => (
-        <div>
-          <div className="fw-semibold">{row.original.patientName}</div>
-          <div className="text-muted small">{row.original.gender}, {row.original.age} yrs</div>
-        </div>
-      )
-    },
-    { 
-      id: 'surgeon',
-      accessorKey: 'surgeon', 
-      header: 'Surgeon',
-      cell: ({ row }) => <span>{row.original.surgeon}</span>
-    },
-    { 
-      id: 'dischargeDate',
-      accessorKey: 'dischargeDate', 
-      header: 'Discharge Date',
-      cell: ({ row }) => <span>{formatDate(row.original.dischargeDate)}</span>
-    },
-    { 
-      id: 'surveyDate',
-      accessorKey: 'surveyDate', 
-      header: 'Survey Date',
-      cell: ({ row }) => <span>{formatDate(row.original.surveyDate)}</span>
-    },
-    { 
-      id: 'status',
-      accessorKey: 'status', 
-      header: 'Status',
-      cell: ({ row }) => (
-        <span className={`badge ${row.original.status === 'Completed' ? 'bg-success' : row.original.status === 'Pending' ? 'bg-warning' : 'bg-info'}`}>
-          {row.original.status}
-        </span>
-      )
-    }
-  ];
+// Define columns for DataTable
+const columns = [
+  { 
+    id: 'id',
+    accessorKey: 'id', 
+    header: 'ID',
+    cell: ({ row }) => <span className="fw-bold">{row.original.id}</span>
+  },
+  { 
+    id: 'patientName',
+    accessorKey: 'patientName', 
+    header: 'Patient Name',
+    cell: ({ row }) => (
+      <div>
+        <div className="fw-semibold">{row.original.patientName}</div>
+        {/* <div className="text-muted small">{row.original.gender}, {row.original.age} yrs</div> */}
+      </div>
+    )
+  },
+  { 
+    id: 'gender',
+    accessorKey: 'gender', 
+    header: 'Gender',
+    cell: ({ row }) => <span>{row.original.gender}</span>
+  },
+  { 
+    id: 'age',
+    accessorKey: 'age', 
+    header: 'Age',
+    cell: ({ row }) => <span>{row.original.age}</span>
+  },
+  { 
+    id: 'surgeon',
+    accessorKey: 'surgeon', 
+    header: 'Surgeon',
+    cell: ({ row }) => <span>{row.original.surgeon}</span>
+  },
+  { 
+    id: 'dischargeDate',
+    accessorKey: 'dischargeDate', 
+    header: 'Discharge Date',
+    cell: ({ row }) => <span>{formatDate(row.original.dischargeDate)}</span>
+  },
+  { 
+    id: 'surveyDate',
+    accessorKey: 'surveyDate', 
+    header: 'Survey Date',
+    cell: ({ row }) => <span>{formatDate(row.original.surveyDate)}</span>
+  },
+  { 
+    id: 'status',
+    accessorKey: 'status', 
+    header: 'Status',
+    cell: ({ row }) => (
+      <span className={`badge ${row.original.status === 'Completed' ? 'bg-success' : row.original.status === 'Pending' ? 'bg-warning' : 'bg-info'}`}>
+        {row.original.status}
+      </span>
+    )
+  }
+];
 
   // Handle Edit
   const handleEdit = (row) => {
@@ -353,7 +680,7 @@ const SurveyTable = () => {
         )}
       </CustomPanel>
 
-      {/* View Panel */}
+      {/* View Panel - Shows Questions and Answers */}
       <CustomPanel
         isOpen={isViewPanelOpen}
         title={`Survey Details - ${selectedSurvey?.patientName || ''}`}
@@ -363,49 +690,10 @@ const SurveyTable = () => {
         width="700px"
       >
         {selectedSurvey && (
-          <div>
-            <div className="bg-light p-3 rounded-3 mb-3">
-              <div className="row">
-                <div className="col-md-6">
-                  <small className="text-muted">Patient Name</small>
-                  <div className="fw-semibold">{selectedSurvey.patientName}</div>
-                </div>
-                <div className="col-md-6">
-                  <small className="text-muted">Status</small>
-                  <div>
-                    <span className={`badge ${selectedSurvey.status === 'Completed' ? 'bg-success' : selectedSurvey.status === 'Pending' ? 'bg-warning' : 'bg-info'}`}>
-                      {selectedSurvey.status}
-                    </span>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <small className="text-muted">Age / Gender</small>
-                  <div className="fw-semibold">{selectedSurvey.age} / {selectedSurvey.gender}</div>
-                </div>
-                <div className="col-md-6">
-                  <small className="text-muted">Surgeon</small>
-                  <div className="fw-semibold">{selectedSurvey.surgeon}</div>
-                </div>
-                <div className="col-md-6">
-                  <small className="text-muted">Discharge Date</small>
-                  <div className="fw-semibold">{formatDate(selectedSurvey.dischargeDate)}</div>
-                </div>
-                <div className="col-md-6">
-                  <small className="text-muted">Survey Date</small>
-                  <div className="fw-semibold">{formatDate(selectedSurvey.surveyDate)}</div>
-                </div>
-              </div>
-            </div>
-            <h6 className="fw-semibold mb-2">Survey Answers</h6>
-            <div className="bg-white p-3 rounded-3 border">
-              {Object.entries(selectedSurvey.answers).map(([key, value]) => (
-                <div key={key} className="d-flex justify-content-between py-1 border-bottom border-light">
-                  <span className="text-muted">Question {key}:</span>
-                  <span className="fw-semibold">{value || 'Not answered'}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ViewSurvey 
+            survey={selectedSurvey} 
+            onClose={() => setIsViewPanelOpen(false)} 
+          />
         )}
       </CustomPanel>
 
@@ -449,24 +737,16 @@ const SurveyTable = () => {
       )}
 
       <style>{`
-        /* Ensure table cells allow overflow */
-        .table-responsive {
-          overflow: visible !important;
-        }
         
         .table {
           overflow: visible !important;
         }
-        
         tbody tr {
           position: relative;
         }
-        
         td {
           position: relative;
         }
-        
-        /* Fix for action column */
         .actions-column {
           overflow: visible !important;
         }
