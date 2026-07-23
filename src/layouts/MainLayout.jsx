@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
 const MainLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Check if route is a builder route (full width, no sidebar)
+  const isBuilderRoute = location.pathname.includes('/create') || 
+                         location.pathname.includes('/create-survey') ||
+                         location.pathname.includes('/edit-survey') ||
+                         location.pathname.includes('/survey-builder');
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,7 +27,6 @@ const MainLayout = () => {
       }
     };
     window.addEventListener('resize', handleResize);
-    // Initial check
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -40,20 +46,25 @@ const MainLayout = () => {
   // Calculate margin based on sidebar state
   const getMarginLeft = () => {
     if (window.innerWidth < 768) {
-      return 0; // Mobile - no margin
+      return 0;
+    }
+    if (isBuilderRoute) {
+      return 0; // No margin for builder routes
     }
     return sidebarCollapsed ? '70px' : '250px';
   };
 
   return (
     <div className="d-flex" style={{ height: '100vh', overflow: 'hidden' }}>
-      {/* Sidebar */}
-      <Sidebar 
-        isCollapsed={sidebarCollapsed}
-        isMobileOpen={mobileMenuOpen}
-        onToggle={toggleSidebar}
-        onMobileClose={closeMobileMenu}
-      />
+      {/* Sidebar - Hide on builder routes */}
+      {!isBuilderRoute && (
+        <Sidebar 
+          isCollapsed={sidebarCollapsed}
+          isMobileOpen={mobileMenuOpen}
+          onToggle={toggleSidebar}
+          onMobileClose={closeMobileMenu}
+        />
+      )}
 
       {/* Main Content */}
       <div 
@@ -70,9 +81,9 @@ const MainLayout = () => {
         <div 
           className="flex-grow-1" 
           style={{ 
-            // overflowY: 'auto', 
-            padding: '0',
-            // background: '#f5f7fa',
+            overflowY: 'auto', 
+            padding: isBuilderRoute ? '0' : '20px 24px',
+            background: '#f5f7fa',
           }}
         >
           <Outlet />

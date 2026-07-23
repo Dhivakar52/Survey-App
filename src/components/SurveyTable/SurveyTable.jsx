@@ -364,7 +364,7 @@ const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
             maxWidth: '200px',
           }}
         >
-          <button
+          {/* <button
             onClick={() => {
               setIsMenuOpen(false);
               onView(row);
@@ -376,7 +376,7 @@ const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
           >
             <Eye size={16} />
             <span>View</span>
-          </button>
+          </button> */}
           <button
             onClick={() => {
               setIsMenuOpen(false);
@@ -387,8 +387,8 @@ const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
             onMouseEnter={(e) => e.currentTarget.style.background = '#f8f9fa'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
-            <Edit size={16} />
-            <span>Edit</span>
+            <Eye size={16} />
+            <span>View</span>
           </button>
           <hr className="my-1" />
           <button
@@ -641,7 +641,7 @@ const columns = [
       {/* Edit Panel */}
       <CustomPanel
         isOpen={isEditPanelOpen}
-        title={`Edit Survey - ${selectedSurvey?.patientName || ''}`}
+        title={`View Survey - ${selectedSurvey?.patientName || ''}`}
         onClose={() => setIsEditPanelOpen(false)}
         onSave={() => {
           console.log('Saving survey:', selectedSurvey);

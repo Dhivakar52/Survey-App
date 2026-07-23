@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Logo from "../assets/srm_logo.png";
 import { useSurveyContext, LANGUAGES } from '../context/SurveyContext';
-import { LogOut, User, ChevronDown, Settings, UserCircle, Shield, Activity, Home, ClipboardList } from 'lucide-react';
+import { LogOut, User, ChevronDown, Settings, UserCircle, Home, ClipboardList, PlusCircle, LayoutDashboard } from 'lucide-react';
 
-const Header = () => {
+const Header = ({ onMobileMenuToggle }) => {
   const { language, setLanguage, t } = useSurveyContext();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -32,6 +33,11 @@ const Header = () => {
   const userName = userEmail.split('@')[0] || 'Admin';
   const displayName = userName.charAt(0).toUpperCase() + userName.slice(1);
 
+  // Check if on builder route
+  const isBuilderRoute = location.pathname.includes('/create') || 
+                         location.pathname.includes('/edit-survey') ||
+                         location.pathname.includes('/survey-builder');
+
   return (
     <div className="app-header" style={{
       display: 'flex',
@@ -51,17 +57,17 @@ const Header = () => {
       <div className='d-flex justify-content-center' style={{
         flex: '0 0 auto',
       }}>
-        {/* <img 
+        <img 
           src={Logo} 
           className='' 
           alt="SRM Medical College Hospital" 
           style={{
-            height: '50px',
+            height: '40px',
             width: 'auto',
             maxWidth: '100%',
             objectFit: 'contain',
           }}
-        /> */}
+        />
       </div>
 
       {/* Brand Section */}
@@ -100,7 +106,7 @@ const Header = () => {
         flex: '0 0 auto',
       }}>
         {/* Language Selector */}
-        {/* <select
+        <select
           className="lang-select"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
@@ -123,7 +129,20 @@ const Header = () => {
               {lang.name}
             </option>
           ))}
-        </select> */}
+        </select>
+
+        {/* Mobile Menu Toggle Button */}
+        <button
+          onClick={onMobileMenuToggle}
+          className="d-md-none btn btn-outline-secondary btn-sm"
+          style={{ padding: '6px 8px' }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
 
         {/* User Profile Dropdown */}
         <div className="position-relative" ref={dropdownRef}>
@@ -227,7 +246,7 @@ const Header = () => {
 
               {/* Menu Items */}
               <div className="py-1">
-                {/* <button
+                <button
                   className="d-flex align-items-center gap-3 w-100 px-4 py-2 border-0 bg-transparent"
                   style={{
                     cursor: 'pointer',
@@ -237,11 +256,11 @@ const Header = () => {
                   onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   onClick={() => {
                     setIsUserMenuOpen(false);
-                    navigate('/profile');
+                    navigate('/');
                   }}
                 >
-                  <UserCircle size={18} color="#666" />
-                  <span className="small">My Profile</span>
+                  <Home size={18} color="#666" />
+                  <span className="small">Home</span>
                 </button>
 
                 <button
@@ -257,8 +276,8 @@ const Header = () => {
                     navigate('/dashboard');
                   }}
                 >
-                  <Home size={18} color="#666" />
-                  <span className="small">Dashboard</span>
+                  <LayoutDashboard size={18} color="#666" />
+                  <span className="small">Survey List</span>
                 </button>
 
                 <button
@@ -271,31 +290,14 @@ const Header = () => {
                   onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   onClick={() => {
                     setIsUserMenuOpen(false);
-                    navigate('/responses');
+                    navigate('/create-survey');
                   }}
                 >
-                  <ClipboardList size={18} color="#666" />
-                  <span className="small">Survey Responses</span>
+                  <PlusCircle size={18} color="#666" />
+                  <span className="small">Create Survey</span>
                 </button>
 
-                <button
-                  className="d-flex align-items-center gap-3 w-100 px-4 py-2 border-0 bg-transparent"
-                  style={{
-                    cursor: 'pointer',
-                    transition: 'background 0.15s ease',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = '#f8f9fa'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                  onClick={() => {
-                    setIsUserMenuOpen(false);
-                    navigate('/settings');
-                  }}
-                >
-                  <Settings size={18} color="#666" />
-                  <span className="small">Settings</span>
-                </button> */}
-
-                {/* <hr className="my-1" /> */}
+                <hr className="my-1" />
 
                 <button
                   className="d-flex align-items-center gap-3 w-100 px-4 py-2 border-0 bg-transparent"
@@ -331,7 +333,7 @@ const Header = () => {
           }
           
           .app-header img {
-            height: 40px !important;
+            height: 32px !important;
           }
           
           .brand-mark span:last-child {
@@ -346,9 +348,9 @@ const Header = () => {
           }
           
           .lang-select {
-            padding: 4px 10px !important;
-            font-size: 0.7rem !important;
-            min-width: 70px !important;
+            padding: 4px 8px !important;
+            font-size: 0.65rem !important;
+            min-width: 60px !important;
           }
         }
 
@@ -359,22 +361,22 @@ const Header = () => {
           }
           
           .app-header img {
-            height: 32px !important;
+            height: 28px !important;
           }
           
           .brand-mark span:last-child {
-            font-size: 0.6rem !important;
+            font-size: 0.55rem !important;
           }
           
           .brand-mark .dot {
-            width: 6px !important;
-            height: 6px !important;
+            width: 5px !important;
+            height: 5px !important;
           }
           
           .lang-select {
-            padding: 3px 8px !important;
+            padding: 3px 6px !important;
             font-size: 0.6rem !important;
-            min-width: 60px !important;
+            min-width: 50px !important;
           }
         }
 
@@ -386,7 +388,7 @@ const Header = () => {
           }
           
           .app-header img {
-            height: 35px !important;
+            height: 30px !important;
           }
           
           .brand-mark {
@@ -395,7 +397,7 @@ const Header = () => {
           }
           
           .brand-mark span:last-child {
-            font-size: 0.65rem !important;
+            font-size: 0.6rem !important;
             white-space: normal !important;
           }
         }
